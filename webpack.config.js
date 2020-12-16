@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
   mode: 'development',
@@ -9,6 +10,9 @@ module.exports = {
     filename: 'main.[hash:8].js'
   },
   plugins: [
+    // 打包前先清除文件夹内容
+    new CleanWebpackPlugin(),
+    // 将打包文件注入 html 中
     new HtmlWebpackPlugin({
       template: 'index.html', // html 模板路径
       filename: 'index.html', // html 输出文件名
