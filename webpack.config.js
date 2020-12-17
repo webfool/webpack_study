@@ -4,6 +4,10 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
   mode: 'development',
+  // devtool: 'inline-source-map',
+  devServer: { // webpack-dev-server 的配置
+    contentBase: './build'
+  },
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'build'), // path 必须是绝对路径

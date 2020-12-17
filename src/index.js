@@ -1,3 +1,4 @@
 import a from './a'
 
-console.log('index ->', a)
+console.log('in index')
+a()
