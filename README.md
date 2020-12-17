@@ -177,3 +177,50 @@ module.exports = {
   }
 }
 ```
+
+- 配置 babel 转译 js
+```js
+npm i -D 
+babel-loader 
+@babel/core 
+@babel/preset-env 
+@babel/plugin-transform-runtime 
+@babel/plugin-proposal-class-properties 
+@babel/plugin-proposal-decorators
+
+npm i core-js@3 @babel/runtime-corejs3
+
+// webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                [
+                  "@babel/preset-env",
+                  {
+                    targets: "> 0.25%, not dead",
+                    useBuiltIns: 'usage',
+                    corejs: 3
+                  }
+                ]
+              ],
+              plugins: [
+                ["@babel/plugin-proposal-decorators", {legacy: true}], // 支持类的装饰器语法
+                ["@babel/plugin-proposal-class-properties", { loose : true }], // 支持类属性语法
+                ['@babel/plugin-transform-runtime', {corejs: 3}]
+              ]
+            }
+          }
+        ],
+        exclude: /node_module/,
+      }
+    ]
+  }
+}
+```

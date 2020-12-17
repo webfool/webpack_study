@@ -18,6 +18,32 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.js/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                [
+                  "@babel/preset-env",
+                  {
+                    targets: "> 0.25%, not dead",
+                    useBuiltIns: 'usage',
+                    corejs: 3
+                  }
+                ]
+              ],
+              plugins: [
+                ["@babel/plugin-proposal-decorators", {legacy: true}], // 支持类的装饰器语法
+                ["@babel/plugin-proposal-class-properties", { loose : true }], // 支持类属性语法
+                ['@babel/plugin-transform-runtime', {corejs: 3}]
+              ]
+            }
+          }
+        ],
+        exclude: /node_module/,
+      },
+      {
         test: /\.css$/i,
         use: [
           // 两个 loader 的顺序不能变，loader 执行顺序由后往前
