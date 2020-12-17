@@ -278,7 +278,7 @@ module.exports = {
 ```js
 const path = require('path')
 
-module.exports {
+module.exports = {
   resolve: {
     extensions: ['.js', '.json', '.css', '.less'], // 引入文件时，如果原路径未找到，则按此顺序添加后缀去查找
     alias: {
@@ -286,4 +286,29 @@ module.exports {
     }
   },
 }
+```
+- 根据环境区分使用的 webpack 配置文件
+```js
+npm i -D webpack-merge
+
+// 原文件 webpack.config.js 改为 webpack.base.js
+
+// webpack.dev.js
+const { merge } = require('webpack-merge')
+const base = require('./webpack.base')
+
+module.exports = merge(base, {
+  mode: 'development',
+  devServer: { // webpack-dev-server 的配置
+    contentBase: './build'
+  },
+})
+
+// webpack.prod.js
+const { merge } = require('webpack-merge')
+const base = require('./webpack.base')
+
+module.exports = merge(base, {
+  mode: 'production'
+})
 ```
