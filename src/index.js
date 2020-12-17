@@ -24,3 +24,9 @@ function doc(target) {
 console.log('commonSay ->', commonSay)
 
 console.log('env ->', ENV)
+
+fetch('/api/account/testFetch', {
+  method: 'get'
+}).then(res => res.json()).then(result => {
+  console.log('result ->', result)
+})
