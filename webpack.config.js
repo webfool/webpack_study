@@ -12,7 +12,8 @@ module.exports = {
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'build'), // path 必须是绝对路径
-    filename: 'main.[hash:8].js'
+    filename: 'main.[hash:8].js',
+    publicPath: '',
   },
   module: {
     rules: [
@@ -36,6 +37,21 @@ module.exports = {
           'postcss-loader',
           'less-loader'
         ]
+      },
+      {
+        test: /\.(jpg|png|bmp|svg|gif)$/i,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 6 * 1024 // 文件大小在这个以下，则转成 base64，否则通过 file-loader 转成 url 地址
+            }
+          }
+        ]
+      },
+      {
+        test: /\.html/i, // 在 html 页面中，通过 url-loader 处理路径
+        use: 'html-loader'
       }
     ]
   },

@@ -1,6 +1,6 @@
 npx webpack 默认将 src/index.js 打包到 dist/main.js
 
-- [ ] 自定义 webpack.config.js 配置文件和 npm script
+- 自定义 webpack.config.js 配置文件和 npm script
 ```js
 // webpack.config.js
 const path = require('path')
@@ -20,7 +20,7 @@ module.exports = {
   }
 }
 ```
-- [ ] 通过 html-webpack-plugin 插件，将打包文件注入 html 中
+- 通过 html-webpack-plugin 插件，将打包文件注入 html 中
 ```js
 npm install --save-dev clean-webpack-plugin
 
@@ -40,7 +40,7 @@ module.exports = {
   ]
 }
 ```
-- [ ] 加入 clean-webpack-plugin，打包前先清除文件夹的内容
+- 加入 clean-webpack-plugin，打包前先清除文件夹的内容
 ```js
 npm install --save-dev clean-webpack-plugin
 
@@ -53,7 +53,7 @@ module.exports = {
   ]
 }
 ```
-- [ ] 配置 watch 命令监听文件变化，自动重新打包
+- 配置 watch 命令监听文件变化，自动重新打包
 ```js
 // package.json
 {
@@ -62,7 +62,7 @@ module.exports = {
   }
 }
 ```
-- [ ] 配置 webpack-dev-server 启动开发 web 服务器并支持热更新
+- 配置 webpack-dev-server 启动开发 web 服务器并支持热更新
 ```js
 npm install --save-dev webpack-dev-server
 
@@ -81,7 +81,7 @@ module.exports = {
 }
 ```
 
-- [ ] 配置 style-loader css-loader 以支持 css 的加载
+- 配置 style-loader css-loader 以支持 css 的加载
 ```js
 npm install --save-dev style-loader css-loader
 
@@ -104,7 +104,7 @@ module.exports = {
 }
 ```
 
-- [ ] 配置 less less-loader 以支持 less 加载
+- 配置 less less-loader 以支持 less 加载
 ```js
 npm install --save-dev less less-loader
 
@@ -123,7 +123,7 @@ module.exports = {
 }
 ```
 
-- [ ] 配置 autoprefixer 为 css 自动添加浏览器属性前缀
+- 配置 autoprefixer 为 css 自动添加浏览器属性前缀
 ```js
 npm i -D postcss-loader postcss autoprefixer
 
@@ -150,5 +150,30 @@ module.exports = {
   plugins: [
     require('autoprefixer')
   ]
+}
+```
+
+- 配置 url-loader、file-loader、html-loader 以支持在文件内引入图片
+常见的引入图片的场景：js 中 import、css 中的 url、html 中的 <img src="" />
+```js
+npm i -D url-loader file-loader html-loader
+
+// webpack.config.js
+module.exports = {
+  {
+    test: /\.(jpg|png|bmp|svg|gif)$/i,
+    use: [
+      {
+        loader: 'url-loader',
+        options: {
+          limit: 6 * 1024 // 单位是b，文件大小在这个以下，则转成 base64，否则通过 file-loader 转成 url 地址
+        }
+      }
+    ]
+  },
+  {
+    test: /\.html/i, // 在 html 页面中，通过 url-loader 处理路径
+    use: 'html-loader'
+  }
 }
 ```
