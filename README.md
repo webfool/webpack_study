@@ -255,3 +255,22 @@ module.exports = {
   }
 }
 ```
+
+- 配置 copy-webpack-plugin 用于迁移文件
+```js
+npm i -D copy-webpack-plugin
+
+// webpack.config.js
+module.exports = {
+  plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: 'doc',
+          to: './doc'
+        }
+      ]
+    })
+  ]
+}
+```
