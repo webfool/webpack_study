@@ -1,3 +1,11 @@
+::placeholder {
+  color: gray;
+}
+
 body {
   background-color: yellow;
+}
+
+.box {
+  transform: rotate(30deg);
 }

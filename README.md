@@ -122,3 +122,33 @@ module.exports = {
   ]
 }
 ```
+
+- [ ] 配置 autoprefixer 为 css 自动添加浏览器属性前缀
+```js
+npm i -D postcss-loader postcss autoprefixer
+
+// webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /.less$/i,
+        use: [
+          // 'style-loader',
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          'less-loader'
+        ]
+      }
+    ]
+  }
+}
+
+// postcss.config.js
+module.exports = {
+  plugins: [
+    require('autoprefixer')
+  ]
+}
+```

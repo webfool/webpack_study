@@ -1,6 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
   mode: 'development',
@@ -22,14 +23,17 @@ module.exports = {
           // style-loader 用于通过 js 动态将 css 插入 head 中
           // css-loader 用于解析 css 文件
           'style-loader',
-          'css-loader'
+          'css-loader',
+          'postcss-loader'
         ]
       },
       {
         test: /.less$/i,
         use: [
-          'style-loader',
+          // 'style-loader',
+          MiniCssExtractPlugin.loader,
           'css-loader',
+          'postcss-loader',
           'less-loader'
         ]
       }
@@ -38,6 +42,7 @@ module.exports = {
   plugins: [
     // 打包前先清除文件夹内容
     new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin(),
     // 将打包文件注入 html 中
     new HtmlWebpackPlugin({
       template: 'index.html', // html 模板路径
