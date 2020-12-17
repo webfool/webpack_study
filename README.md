@@ -103,3 +103,22 @@ module.exports = {
   }
 }
 ```
+
+- [ ] 配置 less less-loader 以支持 less 加载
+```js
+npm install --save-dev less less-loader
+
+// webpack.config.js
+module.exports = {
+  "rules": [
+    {
+        test: /.less$/i,
+        use: [
+          'style-loader',
+          'css-loader',
+          'less-loader'
+        ]
+      }
+  ]
+}
+```
