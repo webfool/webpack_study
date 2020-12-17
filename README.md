@@ -311,4 +311,39 @@ const base = require('./webpack.base')
 module.exports = merge(base, {
   mode: 'production'
 })
+
+// package.json
+{
+  "scripts": {
+    "dev": "webpack serve --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
+  }
+}
+```
+
+- 通过 cross-env 设置环境变量，再通过 DefinePlugin 赋值到代码
+```js
+npm i -D cross-env
+
+// package.json
+{
+  "scripts": {
+    "dev": "cross-env APP_ENV=dev webpack serve --config webpack.dev.js",
+    "build:dev": "cross-env APP_ENV=dev webpack --config webpack.dev.js",
+    "build:test": "cross-env APP_ENV=test webpack --config webpack.prod.js",
+    "build": "cross-env APP_ENV=live webpack --config webpack.prod.js"
+  }
+}
+
+// webpack.base.js
+module.exports = {
+  plugins: [
+    new webpack.DefinePlugin({
+      'ENV': JSON.stringify(process.env.APP_ENV)
+    }),
+  ]
+}
+
+// index.js 中使用
+console.log('env ->', ENV)
 ```

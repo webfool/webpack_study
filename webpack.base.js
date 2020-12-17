@@ -3,9 +3,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const webpack = require('webpack')
 
 module.exports = {
-  mode: 'development',
   // devtool: 'inline-source-map',
   entry: './src/index.js',
   output: {
@@ -89,6 +89,9 @@ module.exports = {
   plugins: [
     // 打包前先清除文件夹内容
     new CleanWebpackPlugin(),
+    new webpack.DefinePlugin({
+      'ENV': JSON.stringify(process.env.APP_ENV)
+    }),
     new MiniCssExtractPlugin({
       filename: 'css/main.css'
     }),

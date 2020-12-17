@@ -23,4 +23,4 @@ function doc(target) {
 // console.log('me ->', new Me())
 console.log('commonSay ->', commonSay)
 
-console.log('env ->', process.env.NODE_ENV)
+console.log('env ->', ENV)
