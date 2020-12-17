@@ -80,3 +80,26 @@ module.exports = {
   }
 }
 ```
+
+- [ ] 配置 style-loader css-loader 以支持 css 的加载
+```js
+npm install --save-dev style-loader css-loader
+
+// webpack.config.js
+module.exports = {
+  module: {
+    "rules": [
+      {
+        test: /\.css$/i,
+        use: [
+          // 两个 loader 的顺序不能变，loader 执行顺序由后往前
+          // style-loader 用于通过 js 动态将 css 插入 head 中
+          // css-loader 用于解析 css 文件
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ]
+  }
+}
+```

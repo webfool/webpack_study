@@ -13,6 +13,20 @@ module.exports = {
     path: path.resolve(__dirname, 'build'), // path 必须是绝对路径
     filename: 'main.[hash:8].js'
   },
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: [
+          // 两个 loader 的顺序不能变，loader 执行顺序由后往前
+          // style-loader 用于通过 js 动态将 css 插入 head 中
+          // css-loader 用于解析 css 文件
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ]
+  },
   plugins: [
     // 打包前先清除文件夹内容
     new CleanWebpackPlugin(),
