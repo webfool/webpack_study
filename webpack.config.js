@@ -70,7 +70,8 @@ module.exports = {
           {
             loader: 'url-loader',
             options: {
-              limit: 6 * 1024 // 文件大小在这个以下，则转成 base64，否则通过 file-loader 转成 url 地址
+              limit: 6 * 1024, // 文件大小在这个以下，则转成 base64，否则通过 file-loader 转成 url 地址
+              outputPath: 'img/'
             }
           }
         ]
@@ -84,7 +85,9 @@ module.exports = {
   plugins: [
     // 打包前先清除文件夹内容
     new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'css/main.css'
+    }),
     // 将打包文件注入 html 中
     new HtmlWebpackPlugin({
       template: 'index.html', // html 模板路径

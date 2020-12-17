@@ -104,6 +104,35 @@ module.exports = {
 }
 ```
 
+- 配置 mini-css-extract-plugin 用于将 css 抽出独立文件
+```js
+npm i -D mini-css-extract-plugin
+
+// webpack.config.js
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
+module.exports = {
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'css/main.css' // 将提取的 css 文件放在 css 目录下
+    }),
+  ],
+  rules: [
+    {
+      test: /\.css$/i,
+      use: [
+        // 两个 loader 的顺序不能变，loader 执行顺序由后往前
+        // style-loader 用于通过 js 动态将 css 插入 head 中
+        // css-loader 用于解析 css 文件
+        // 'style-loader',
+        MiniCssExtractPlugin.loader
+        'css-loader'
+      ]
+    }
+  ]
+}
+```
+
 - 配置 less less-loader 以支持 less 加载
 ```js
 npm install --save-dev less less-loader
@@ -114,7 +143,8 @@ module.exports = {
     {
         test: /.less$/i,
         use: [
-          'style-loader',
+          // 'style-loader',
+          MiniCssExtractPlugin.loader,
           'css-loader',
           'less-loader'
         ]
@@ -166,7 +196,8 @@ module.exports = {
       {
         loader: 'url-loader',
         options: {
-          limit: 6 * 1024 // 单位是b，文件大小在这个以下，则转成 base64，否则通过 file-loader 转成 url 地址
+          limit: 6 * 1024, // 文件大小在这个以下，则转成 base64，否则通过 file-loader 转成 url 地址
+          outputPath: 'img/'
         }
       }
     ]
