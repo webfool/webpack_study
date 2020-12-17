@@ -274,3 +274,16 @@ module.exports = {
   ]
 }
 ```
+- 配置 resolve 选项定义查找后缀和别名
+```js
+const path = require('path')
+
+module.exports {
+  resolve: {
+    extensions: ['.js', '.json', '.css', '.less'], // 引入文件时，如果原路径未找到，则按此顺序添加后缀去查找
+    alias: {
+      "@common": path.resolve(__dirname, 'common')
+    }
+  },
+}
+```

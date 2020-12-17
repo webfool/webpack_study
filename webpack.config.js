@@ -16,6 +16,12 @@ module.exports = {
     filename: 'main.[hash:8].js',
     publicPath: '',
   },
+  resolve: {
+    extensions: ['.js', '.json', '.css', '.less'], // 引入文件时，如果原路径未找到，则按此顺序添加后缀去查找
+    alias: {
+      "@common": path.resolve(__dirname, 'common')
+    }
+  },
   module: {
     rules: [
       {
