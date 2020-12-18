@@ -25,8 +25,16 @@ console.log('commonSay ->', commonSay)
 
 console.log('env ->', ENV)
 
-fetch('/api/account/testFetch', {
-  method: 'get'
-}).then(res => res.json()).then(result => {
-  console.log('result ->', result)
-})
+// 测试代理
+// fetch('/api/account/testFetch', {
+//   method: 'get'
+// }).then(res => res.json()).then(result => {
+//   console.log('result ->', result)
+// })
+
+// 懒加载
+setTimeout(() => {
+  import('./b.js').then(({default: b}) => {
+    b()
+  })
+}, 3000)

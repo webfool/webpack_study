@@ -375,3 +375,18 @@ module.exports = merge(base, {
   },
 })
 ```
+
+- 配置懒加载
+```js
+// 新建 b.js
+export default () => {
+  console.log('dynamic load b')
+}
+
+// index.js
+setTimeout(() => {
+  import('./b.js').then(({default: b}) => {
+    b()
+  })
+}, 3000)
+```
