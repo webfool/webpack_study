@@ -457,9 +457,55 @@ module.exports = {
 }
 ```
 
+对于部分包，可以通过 babel-plugin 将 import 语法进行修改，这样可以避免把整个包打包进来
+```js
+import {join as joinFn} from 'loadash'
+
+// 改为
+
+import joinFn from 'loadash/join'
+```
+
 - hoisting 作用域提升
 将模块按照引用顺序放到一个函数作用域中，再通过重命名避免命名冲突。它的好处：
 1、大量作用域包裹代码会导致体积增大，通过 hoisting 可以减小代码体积
 2、创建的函数作用域小了，对内存的开销也会减小
 
 它在 mode: production 自动开启
+
+- 配置代码分割
+```js
+// webpack.base.js
+optimization: {
+  splitChunks: {
+    // async 只会对 import() 异步进行分割；
+    // initial 和 all 都会分割异步和同步，initial 认为即使异步和同步分割出相同的代码块，它们不关联，minChunks 不对异步进行计数
+    // all 认为异步和同步是关联的，minChunks 会对它们一起计数
+    // all 一般是最优解
+    chunks: 'all',
+    minChunks: 2,
+    minSize: 1,
+    maxInitialRequests: 3, // 入口模块中，允许分割模块的最大数量，自身算一次。超出数量时，取文件大的进行分割
+    maxAsyncRequests: 2, // import() 分割出来的代码中，允许再分割的最大数量，自身算一次。超出数量时，取文件大的进行分割
+    name(module, chunks, cacheGroupKey) {
+      const moduleFileName = module.identifier().split('/').reduceRight(item => item);
+      const allChunksNames = chunks.map((item) => item.name).join('~');
+      return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+    },
+    cacheGroups: { // 配置缓存组
+      // test: 用来匹配模块
+      // priority：内置的缓存组中为 -20；自定义的的缓存组中，如果没有配置，则默认为0
+      // reuseExistingChunk：如果当前模块已经提取过了，那么复用已经生成的
+      vendor: {
+        test: /[\\/]node_modules[\\/]/,
+        priority: 10,
+        reuseExistingChunk: true
+      },
+      common: {
+        priority: 0,
+        reuseExistingChunk: true
+      }
+    }
+  }
+}
+```

@@ -7,10 +7,48 @@ const webpack = require('webpack')
 
 module.exports = {
   // devtool: 'inline-source-map',
-  entry: './src/index.js',
+  entry: {
+    "entry1": './src/index.js',
+    // "entry2": './src/index2.js',
+    // "entry3": './src/index3.js',
+    // "entry4": './src/index4.js'
+  },
+  optimization: {
+    splitChunks: {
+      // async 只会对 import() 异步进行分割；
+      // initial 和 all 都会分割异步和同步，initial 认为即使异步和同步分割出相同的代码块，它们不关联，minChunks 不对异步进行计数
+      // all 认为异步和同步是关联的，minChunks 会对它们一起计数
+      // all 一般是最优解
+      chunks: 'all',
+      minChunks: 2,
+      minSize: 1,
+      maxInitialRequests: 3, // 入口模块中，允许分割模块的最大数量，自身算一次。超出数量时，取文件大的进行分割
+      maxAsyncRequests: 2, // import() 分割出来的代码中，允许再分割的最大数量，自身算一次。超出数量时，取文件大的进行分割
+      name(module, chunks, cacheGroupKey) {
+        const moduleFileName = module.identifier().split('/').reduceRight(item => item);
+        const allChunksNames = chunks.map((item) => item.name).join('~');
+        return `${cacheGroupKey}-${allChunksNames}-${moduleFileName}`;
+      },
+      cacheGroups: { // 配置缓存组
+        // test: 用来匹配模块
+        // priority：内置的缓存组中为 -20；自定义的的缓存组中，如果没有配置，则默认为0
+        // reuseExistingChunk：如果当前模块已经提取过了，那么复用已经生成的
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: 10,
+          reuseExistingChunk: true
+        },
+        common: {
+          priority: 0,
+          reuseExistingChunk: true
+        }
+      }
+    }
+  },
   output: {
     path: path.resolve(__dirname, 'build'), // path 必须是绝对路径
-    filename: 'main.[hash:8].js',
+    // filename: 'main.[hash:8].js',
+    filename: '[name].bundle.js',
     publicPath: '',
   },
   resolve: {
