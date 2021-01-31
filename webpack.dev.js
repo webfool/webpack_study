@@ -3,6 +3,9 @@ const base = require('./webpack.base')
 
 module.exports = merge(base, {
   mode: 'development',
+  optimization: {
+    usedExports: true
+  },
   devServer: { // webpack-dev-server 的配置
     contentBase: './build',
     proxy: { // 配置接口代理

@@ -411,3 +411,55 @@ module.exports = {
   ]
 }
 ```
+
+- 配置 tree-shaking
+为了避免 babel 将 import/export 语法转成 commonJs 的语法，需要设置
+```js
+{
+  loader: 'babel-loader',
+  options: {
+    presets: [
+      [
+        "@babel/preset-env",
+        {
+          targets: "> 0.25%, not dead",
+          useBuiltIns: 'usage',
+          corejs: 3,
+          modules: false // 此处设置为 false
+        }
+      ]
+    ]
+  }
+}
+```
+不同环境的 tree-shaking 配置
+```js
+// === dev 环境 ===
+// webpack.dev.js
+module.exports = {
+  optimization: {
+    usedExports: true // 配置之后将会对没有被使用的 export 变量进行标记，并删除没有被用到的且无副作用的模块文件
+  },
+}
+
+// package.json
+{
+  "sideEffects": ["*.css"] // 指定哪些文件存在副作用，这样 tree-shaking 便不会删除该文件
+}
+
+
+// === production 环境 ===
+// 配置 mode: production 之后，并有了标记和清除未使用变量的功能
+
+// package.jso
+{
+  "sideEffects": ["*.css"] // 指定哪些文件存在副作用，这样 tree-shaking 便不会删除该文件
+}
+```
+
+- hoisting 作用域提升
+将模块按照引用顺序放到一个函数作用域中，再通过重命名避免命名冲突。它的好处：
+1、大量作用域包裹代码会导致体积增大，通过 hoisting 可以减小代码体积
+2、创建的函数作用域小了，对内存的开销也会减小
+
+它在 mode: production 自动开启
