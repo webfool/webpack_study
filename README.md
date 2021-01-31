@@ -509,3 +509,15 @@ optimization: {
   }
 }
 ```
+
+- 配置 prefetch 或 preload
+
+通过 prefetch 或者 preload 实现预加载。两者的区别是：prefetch 会在空闲时加载，preload 会和入口文件并行下载
+```js
+// index.js
+function test() {
+  import(/* webpackPrefetch: true */'./a').then(({default: a}) => {
+    console.log(a)
+  })
+}
+```
