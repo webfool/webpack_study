@@ -52,6 +52,7 @@
     "lodash": "^4.17.20"
   },
   "sideEffects": [
-    "*.css"
+    "*.css",
+    "*.less"
   ]
 }

@@ -9,6 +9,7 @@ module.exports = {
   // devtool: 'inline-source-map',
   entry: {
     "entry1": './src/index.js',
+    "lodash": "lodash"
     // "entry2": './src/index2.js',
     // "entry3": './src/index3.js',
     // "entry4": './src/index4.js'
@@ -48,7 +49,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'build'), // path 必须是绝对路径
     // filename: 'main.[hash:8].js',
-    filename: '[name].bundle.js',
+    // filename: '[name]--[hash]--[chunkhash]--[contenthash].js',
+    filename: '[name].[chunkhash].js',
     publicPath: '',
   },
   resolve: {
@@ -132,7 +134,7 @@ module.exports = {
       'ENV': JSON.stringify(process.env.APP_ENV)
     }),
     new MiniCssExtractPlugin({
-      filename: 'css/main.css'
+      filename: 'css/[name].[contenthash].css'
     }),
     // 将打包文件注入 html 中
     new HtmlWebpackPlugin({

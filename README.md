@@ -521,3 +521,20 @@ function test() {
   })
 }
 ```
+
+- 配置 hash、chunkhash、contenthash
+```js
+// 正常配置是 output 中配置 chunkhash，提取的 css 中配置 contenthash
+module.exports = {
+  output: {
+    path: path.resolve(__dirname, 'build'), // path 必须是绝对路径
+    filename: '[name].[chunkhash].js',
+    publicPath: '',
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[contenthash].css'
+    })
+  ]
+}
+```
