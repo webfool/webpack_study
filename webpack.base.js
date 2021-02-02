@@ -4,12 +4,15 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const webpack = require('webpack')
+const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin')
+const smw = new SpeedMeasureWebpackPlugin()
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
-module.exports = {
+module.exports = smw.wrap({
   // devtool: 'inline-source-map',
   entry: {
     "entry1": './src/index.js',
-    "lodash": "lodash"
+    // "lodash": "lodash"
     // "entry2": './src/index2.js',
     // "entry3": './src/index3.js',
     // "entry4": './src/index4.js'
@@ -146,13 +149,14 @@ module.exports = {
         collapseWhitespace: true, // 打包成一行
       }
     }),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: 'doc',
-          to: './doc'
-        }
-      ]
-    })
+    // new CopyWebpackPlugin({
+    //   patterns: [
+    //     {
+    //       from: 'doc',
+    //       to: './doc'
+    //     }
+    //   ]
+    // })
+    new BundleAnalyzerPlugin()
   ]
-}
+})

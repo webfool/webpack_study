@@ -538,3 +538,24 @@ module.exports = {
   ]
 }
 ```
+- 配置统计 plugin 和 loader 花费时间的 plugin
+```js
+// 需要注意，该插件和 CopyWebpackPlugin 不兼容
+const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin')
+const smw = new SpeedMeasureWebpackPlugin()
+
+module.exports = smw.wrap({
+  ...// webpack 的配置
+})
+```
+
+- 配置打包之后的包分析插件
+```js
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
+module.exports = {
+  plugins: [
+    new BundleAnalyzerPlugin()
+  ]
+}
+```

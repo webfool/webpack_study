@@ -1,4 +1,11 @@
-// compiler 实现：从路口开始，递归生成每一个模块的模块对象，最后生成合并成一个打包文件
+// 实现目标：
+// - 从一个入口文件开始，将所有依赖的文件合并到一个 js 文件中，并以模块文件的路径为 key、模块内容为 value，存入对象
+// - 改写模块代码中的 require 方法，使其从对象中取加载模块
+//
+// 概念：
+// - modules 所有的模块文件对象，它包括 name、id、_source、dependencies
+// - chunks 入口对象，它包括 chunkName、entryModule、modules
+// - assets 的 key 为最终输出的文件名、value 为文件内容
 // 
 // 实现细节：
 // - 传入配置对象给 compiler 进行初始化
