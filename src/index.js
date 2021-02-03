@@ -55,9 +55,11 @@ import moment from 'moment'
 // import('./c.js').then(({default: c}) => {
 //   console.log('c', c)
 // })
+import {name} from 'customModule1'
 
 console.log('index111')
 console.log(moment)
+console.log(name)
 // function test() {
 //   import(
 //     /* webpackPrefetch: true */

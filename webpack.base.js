@@ -57,10 +57,11 @@ module.exports = smw.wrap({
     publicPath: '',
   },
   resolve: {
-    extensions: ['.js', '.json', '.css', '.less'], // 引入文件时，如果原路径未找到，则按此顺序添加后缀去查找
-    alias: {
+    modules: [path.resolve(__dirname, 'src/my_modules'), 'node_modules'], // 配置模块查找时的路径，前面的优先级高于后面，绝对路径则只在给定目录查找
+    alias: { // 设置模块查找的别名
       "@common": path.resolve(__dirname, 'common')
-    }
+    },
+    extensions: ['.js', '.json', '.css', '.less'] // 引入文件时，如果原路径未找到，则按此顺序添加后缀去查找
   },
   module: {
     rules: [
@@ -157,6 +158,10 @@ module.exports = smw.wrap({
     //     }
     //   ]
     // })
-    new BundleAnalyzerPlugin()
+    // new BundleAnalyzerPlugin(),
+    new webpack.IgnorePlugin({
+      contextRegExp: /moment$/, // 匹配的文件
+      resourceRegExp: /^\.\/locale$/ // 匹配文件内匹配的请求资源路径
+    })
   ]
 })

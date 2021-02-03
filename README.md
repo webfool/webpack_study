@@ -274,16 +274,17 @@ module.exports = {
   ]
 }
 ```
-- 配置 resolve 选项定义查找后缀和别名
+- 配置 resolve 选项定义查找目录、别名和后缀
 ```js
 const path = require('path')
 
 module.exports = {
   resolve: {
-    extensions: ['.js', '.json', '.css', '.less'], // 引入文件时，如果原路径未找到，则按此顺序添加后缀去查找
+    modules: [path.resolve(__dirname, 'src/my_modules'), 'node_modules'], // 配置模块查找时的路径，前面的优先级高于后面，绝对路径则只在给定目录查找
     alias: {
       "@common": path.resolve(__dirname, 'common')
-    }
+    },
+    extensions: ['.js', '.json', '.css', '.less'], // 引入文件时，如果原路径未找到，则按此顺序添加后缀去查找
   },
 }
 ```
@@ -556,6 +557,20 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 module.exports = {
   plugins: [
     new BundleAnalyzerPlugin()
+  ]
+}
+```
+
+- 配置打包时忽略某些模块
+```js
+const webpack = require('webpack')
+
+module.exports = {
+  plugins: [
+    new webpack.IgnorePlugin({
+      contextRegExp: /moment$/, // 匹配的文件
+      resourceRegExp: /^\.\/locale$/ // 匹配文件内匹配的请求资源路径
+    })
   ]
 }
 ```
