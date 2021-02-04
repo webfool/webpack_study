@@ -1,0 +1,36 @@
+配置 webpack 打包
+
+- 非编译工作：
+  - clean-webpack-plugin 清除文件夹内容
+  - copy-webpack-plugin 迁移文件
+- 输入 entry
+  - js
+    - babel-loader 转译
+  - css
+    - less-loader 解析 less 文件
+    - css-loader 解析 css 文件
+    - postcss-loader postcss autoprefixer 为 css 自动添加浏览器属性前缀
+    - style-loader 将 css 动态加入头部
+    - mini-css-extract-plugin 提取 css 并动态加入头部
+  - 图片
+    - file-loader 将图片转成 url 地址
+    - url-loader 根据图片大小判断转 url 还是 base64
+    - html-loader 支持在 html 通过相对路径引入图片
+- 输出 output
+  - 配置 html-webpack-plugin 将打包文件注入 html 中
+- 优化
+  - 编译优化
+    - 配置 resolve，定义查找目录、别名和后缀
+  - 输出优化
+    - 配置 IgnorePlugin 忽略资源的打包
+    - 通过 terser-webpack-plugin 配置 tree-shaking 和 hoisting 作用域提升，以及代码压缩
+    - 配置 import() 懒加载
+    - 多应用配置 splitChunk，这样可以使用缓存
+    - 配置 optimize-css-assets-webpack-plugin 压缩 css
+    - 配置 compression-webpack-plugin 进行 gzip 压缩
+  - 使用优化
+    - 配置 prefetch/preload 进行预加载
+    - 配置 hash、chunkhash、contenthash 修改已变化文件的文件名，未变化的不修改
+- 打包分析
+  - 配置 speed-measure-webpack-plugin 统计 plugin 和 loader 花费的时间
+  - 配置 webpack-bundle-analyzer 分析打包之后的包结果
