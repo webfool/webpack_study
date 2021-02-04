@@ -51,9 +51,8 @@ module.exports = smw.wrap({
   },
   output: {
     path: path.resolve(__dirname, 'build'), // path 必须是绝对路径
-    // filename: 'main.[hash:8].js',
-    // filename: '[name]--[hash]--[chunkhash]--[contenthash].js',
-    filename: '[name].[chunkhash].js',
+    // filename: '[name].[chunkhash].js',
+    filename: '[name].js',
     publicPath: '',
   },
   resolve: {

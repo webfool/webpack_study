@@ -452,7 +452,7 @@ module.exports = {
 // === production 环境 ===
 // 配置 mode: production 之后，并有了标记和清除未使用变量的功能
 
-// package.jso
+// package.json
 {
   "sideEffects": ["*.css"] // 指定哪些文件存在副作用，这样 tree-shaking 便不会删除该文件
 }
@@ -572,5 +572,62 @@ module.exports = {
       resourceRegExp: /^\.\/locale$/ // 匹配文件内匹配的请求资源路径
     })
   ]
+}
+```
+
+- 测试 terser-webpack-plugin 插件的使用
+
+它对比 Uglify-webpack-plugin 的特点是，支持 es6
+```js
+const TerserPlugin = require('terser-webpack-plugin')
+
+// 需要关闭 mode 配置
+module.exports = {
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        parallel: true, // 开启多线程压缩
+        terserOptions: {
+          mangle: true, // 重写变量名
+          compress: {
+            defaults: false, // 关闭默认的压缩配置
+            // === 删除无用的代码：tree-shaking ===
+            unused: false, // 删除没有被引用的变量
+            dead_code: false, // 删除不能到达的代码，如 if(false)
+            switches: false, // 去除没有用到的 switch 分支，需把 evaluate 开启
+            side_effects: false, // 删除没有副作用且返回值没有被使用的表达式，需要以下方式标识无副作用 /*#__PURE__*/c()
+
+            // === 删除调试代码 ===
+            drop_debugger: false, // 删除 debugger 语句
+            drop_console: false, // 删除 console.* 语句
+
+            // === 语法压缩调整 ===
+            join_vars: false, // 是否合并变量定义，即 var a = 1; var b = 2 会合并成 var a = 1, b =2
+            evaluate: false, // 能够提前对一些表达式进行计算，如 const a = 1+1 会转成 const a = 2
+            properties: false, // 将 obj['name'] 转成 obj.name，需把 evaluate 开启
+            collapse_vars: false, // 对于只用到一次的变量，进行替换
+            booleans: true, // 对布尔表达式进行优化，如 !!a ? b : c 转成 a ? b : c
+          }
+        }
+      })
+    ]
+  }
+}
+```
+
+- 配置 optimize-css-assets-webpack-plugin 压缩 css
+```js
+// webpack.prod.js
+const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+
+module.exports = {
+  optimizations: {
+    minimize: true,
+    minimizer: [
+      '...',
+      new OptimizeCssAssetsWebpackPlugin({})
+    ]
+  }
 }
 ```

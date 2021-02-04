@@ -1,9 +1,17 @@
 const { merge } = require('webpack-merge')
 const base = require('./webpack.base')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
+const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
 
 module.exports = merge(base, {
   mode: 'production',
+  optimization: {
+    minimize: true,
+    minimizer: [
+      '...',
+      new OptimizeCssAssetsWebpackPlugin({})
+    ]
+  },
   plugins: [
     new CompressionWebpackPlugin({ // 开启 gzip 压缩
       test: new RegExp('\\.(js|css)$'),

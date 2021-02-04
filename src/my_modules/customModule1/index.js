@@ -1,3 +1,5 @@
-module.exports = {
-  name: 'customModule1'
+export const name = 'customModule1'
+
+export function test() {
+  console.log('test')
 }

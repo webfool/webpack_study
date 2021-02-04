@@ -1,10 +1,11 @@
 const { merge } = require('webpack-merge')
 const base = require('./webpack.base')
+const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = merge(base, {
   mode: 'development',
   optimization: {
-    usedExports: true
+    usedExports: true,
   },
   devServer: { // webpack-dev-server 的配置
     contentBase: './build',
