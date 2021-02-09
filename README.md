@@ -658,3 +658,71 @@ module.exports = {
   }
 }
 ```
+
+- 配置 dll 动态链接库加快打包速度
+```js
+// package.json
+{
+  "scripts": {
+    "build_dll:dev": "webpack --config webpack.dll.config.js --mode=development",
+    "build_dll": "webpack --config webpack.dll.config.js --mode=production"
+  }
+}
+
+
+// 打包 dll 配置，webpack.dll.config.js
+const path = require('path')
+const webpack = require('webpack')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+
+module.exports = (env, argv) => {
+  const { mode  = 'production' } = argv
+  return {
+    mode,
+    entry: {
+      'react': ['react', 'react-dom']
+    },
+    output: {
+      path: path.resolve(__dirname, 'dllDist'),
+      filename: '[name].dll.js',
+      library: '_dll_[name]'
+    },
+    plugins: [
+      new CleanWebpackPlugin(),
+      new webpack.DllPlugin({
+        name: '_dll_[name]',
+        path: path.resolve(__dirname, 'dllDist', '[name].manifest.json'),
+        // format: true // 将输出的 json 文件格式化
+      })
+    ]
+  }
+}
+
+
+// 在 webpack 打包过程中引入 manifest 映射文件
+const webpack = require('webpack')
+const DllReferencePlugin = webpack.DllReferencePlugin
+
+module.exports = {
+  ...
+  plugins: [
+    new DllReferencePlugin({
+      manifest: path.resolve(__dirname, 'dllDist', 'react.manifest.json')
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: 'dllDist',
+          to: './dllDist'
+        }
+      ]
+    }),
+  ]
+}
+
+// index.html 中配置
+<body>
+...
+<script src="/dllDist/react.dll.json"></script>
+</body>
+```

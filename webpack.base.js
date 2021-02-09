@@ -7,8 +7,10 @@ const webpack = require('webpack')
 const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin')
 const smw = new SpeedMeasureWebpackPlugin()
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const DllReferencePlugin = webpack.DllReferencePlugin
 
-module.exports = smw.wrap({
+// module.exports = smw.wrap({
+module.exports = {
   // devtool: 'inline-source-map',
   entry: {
     "entry1": './src/index.js',
@@ -158,10 +160,22 @@ module.exports = smw.wrap({
     //     }
     //   ]
     // })
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: 'dllDist',
+          to: './dllDist'
+        }
+      ]
+    }),
     // new BundleAnalyzerPlugin(),
     new webpack.IgnorePlugin({
       contextRegExp: /moment$/, // 匹配的文件
       resourceRegExp: /^\.\/locale$/ // 匹配文件内匹配的请求资源路径
+    }),
+    new DllReferencePlugin({
+      manifest: path.resolve(__dirname, 'dllDist', 'react.manifest.json')
     })
   ]
-})
+// })
+}
