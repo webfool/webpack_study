@@ -1,14 +1,4 @@
-import './reset'
-import {name} from 'customModule1'
+import React from 'react'
+import ReactDom from 'react-dom'
 
-// 我是注释
-function fn(a) {
-  console.log(arguments[0])
-}
-
-const ok = !!a ? b : c
-console.log(ok)
-
-if (false) {
-  console.log('abc')
-}
+ReactDom.render(<h1>title</h1>, document.getElementById('app'))

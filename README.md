@@ -256,6 +256,33 @@ module.exports = {
 }
 ```
 
+- 配置 babel 转译 react 的 jsx 语法
+```js
+// babel-loader 中加入 @babel/preset-react
+npm i @babel/preset-react -D
+npm i react react-dom -S
+
+module.exports = {
+  ...
+  modules: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: [
+              ...,
+              "@babel/preset-react"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
 - 配置 copy-webpack-plugin 用于迁移文件
 ```js
 npm i -D copy-webpack-plugin

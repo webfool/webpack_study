@@ -79,7 +79,8 @@ module.exports = smw.wrap({
                     corejs: 3,
                     modules: false
                   }
-                ]
+                ],
+                "@babel/preset-react"
               ],
               plugins: [
                 ["@babel/plugin-proposal-decorators", {legacy: true}], // 支持类的装饰器语法
