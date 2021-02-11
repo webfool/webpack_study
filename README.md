@@ -602,14 +602,15 @@ module.exports = {
 }
 ```
 
-- 测试 terser-webpack-plugin 插件的使用
+- 测试 terser-webpack-plugin 插件用于压缩 js
 
-它对比 Uglify-webpack-plugin 的特点是，支持 es6
+它对比 Uglify-webpack-plugin 的特点是，支持 es6。使用它就会对js代码进行压缩，另外可以再添加其它的配置进行自定义压缩。
 ```js
 const TerserPlugin = require('terser-webpack-plugin')
 
 // 需要关闭 mode 配置
 module.exports = {
+  mode: 'none',
   optimization: {
     minimize: true,
     minimizer: [
@@ -725,4 +726,31 @@ module.exports = {
 ...
 <script src="/dllDist/react.dll.json"></script>
 </body>
+```
+
+- 配置缓存
+```js
+// 在一些性能开销比较大的 loader 前配置 cache-loader，babel-loader 中可以开启缓存 cacheDirectory
+npm i -D cache-loader
+
+// webpack.base.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          'cache-loader',
+          {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+              ...
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
 ```

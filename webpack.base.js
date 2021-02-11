@@ -9,8 +9,8 @@ const smw = new SpeedMeasureWebpackPlugin()
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const DllReferencePlugin = webpack.DllReferencePlugin
 
-// module.exports = smw.wrap({
-module.exports = {
+module.exports = smw.wrap({
+// module.exports = {
   // devtool: 'inline-source-map',
   entry: {
     "entry1": './src/index.js',
@@ -69,9 +69,11 @@ module.exports = {
       {
         test: /\.js/,
         use: [
+          'cache-loader',
           {
             loader: 'babel-loader',
             options: {
+              cacheDirectory: true,
               presets: [
                 [
                   "@babel/preset-env",
@@ -97,6 +99,7 @@ module.exports = {
       {
         test: /\.css$/i,
         use: [
+          'cache-loader',
           // 两个 loader 的顺序不能变，loader 执行顺序由后往前
           // style-loader 用于通过 js 动态将 css 插入 head 中
           // css-loader 用于解析 css 文件
@@ -108,6 +111,7 @@ module.exports = {
       {
         test: /.less$/i,
         use: [
+          'cache-loader',
           // 'style-loader',
           MiniCssExtractPlugin.loader,
           'css-loader',
@@ -160,14 +164,14 @@ module.exports = {
     //     }
     //   ]
     // })
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: 'dllDist',
-          to: './dllDist'
-        }
-      ]
-    }),
+    // new CopyWebpackPlugin({
+    //   patterns: [
+    //     {
+    //       from: 'dllDist',
+    //       to: './dllDist'
+    //     }
+    //   ]
+    // }),
     // new BundleAnalyzerPlugin(),
     new webpack.IgnorePlugin({
       contextRegExp: /moment$/, // 匹配的文件
@@ -175,7 +179,7 @@ module.exports = {
     }),
     new DllReferencePlugin({
       manifest: path.resolve(__dirname, 'dllDist', 'react.manifest.json')
-    })
+    }),
   ]
-// })
-}
+})
+// }
