@@ -11,7 +11,37 @@ const DllReferencePlugin = webpack.DllReferencePlugin
 
 module.exports = smw.wrap({
 // module.exports = {
-  // devtool: 'inline-source-map',
+  // 1.映射回最原先的文件时，只能配置行信息
+  // devtool 由3部分组成，
+  // 1. 定义生成的 map 信息放置的位置：inline、eval、hidden
+  // 2. 是否需要删除列信息、是否映射回包含 loader sourcemap：cheap、cheap-module
+  // eval 映射信息通过 sourceURL 内嵌在打包后的文件内，能映射回源文件
+  // 打包文件内都是通过 sourceMappingURL 关联映射文件，它可能是路径地址，也可能是转换后的 base64
+
+  // sourceURL 如何引入源文件
+
+  // === 【源文件-压缩文件，包含行和列信息】 ===
+  // source-map 映射信息放入 map 文件中，文件地址内嵌到打包文件中
+  // inline-source-map 映射信息转 base64 内嵌在打包文件中
+  // eval-source-map 映射信息转 base64 内嵌在打包文件中，且被 eval 包裹
+  // hidden-source-map 映射信息放入 map 文件中，打包文件内不关联 map 文件
+
+  // === 【源文件-压缩文件，不包含列信息】 ===
+  // cheap-module-source-map，映射信息放入 map 文件中，文件地址内嵌到打包文件中
+  // inline-cheap-module-source-map 映射信息转 base64 内嵌到打包文件中
+  // eval-cheap-module-source-map 映射信息转 base64 内嵌到打包文件中，且被 eval 包裹
+  // hidden-cheap-module-source-map 映射信息放入 map 文件，打包文件内不关联 map 文件
+
+  // === 【打包文件-压缩文件，包含行和列信息】 ===
+  // eval 
+
+  // === 【打包文件-压缩文件，不包含列信息】 ===
+  // cheap-source-map 映射信息放入 map 文件中，文件地址内嵌到打包文件中
+  // inline-cheap-source-map 映射信息转 base64 内嵌到打包文件中
+  // eval-cheap-source-map 映射信息转 base64 内嵌到打包文件内，用 eval 包裹
+  // hidden-cheap-source-map 映射信息放入 map 文件中，打包文件不关联 map 文件
+
+  // devtool: 'eval-cheap-module-source-map',
   entry: {
     "entry1": './src/index.js',
     // "lodash": "lodash"

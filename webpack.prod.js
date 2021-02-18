@@ -5,6 +5,7 @@ const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plug
 
 module.exports = merge(base, {
   mode: 'production',
+  devtool: 'hidden-source-map',
   optimization: {
     minimize: true,
     minimizer: [

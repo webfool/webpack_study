@@ -1,4 +1,5 @@
-import React from 'react'
-import ReactDom from 'react-dom'
-
-ReactDom.render(<h1>title</h1>, document.getElementById('app'))
+import a from './a'
+console.log(a)
+let b = 2
+let c = 3
+console.log(e.f)

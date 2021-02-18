@@ -16,4 +16,8 @@ function a4 () {
   console.log('in a function')
 }
 
+let aaa = 2
+
+console.log(c.d)
+
 export default a
