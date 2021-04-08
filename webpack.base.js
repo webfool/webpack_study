@@ -8,6 +8,8 @@ const SpeedMeasureWebpackPlugin = require('speed-measure-webpack-plugin')
 const smw = new SpeedMeasureWebpackPlugin()
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const DllReferencePlugin = webpack.DllReferencePlugin
+const DonePlugin = require('./customPlugins/DonePlugin')
+const AssetPlugin = require('./customPlugins/AssetPlugin')
 
 module.exports = smw.wrap({
 // module.exports = {
@@ -210,6 +212,8 @@ module.exports = smw.wrap({
     new DllReferencePlugin({
       manifest: path.resolve(__dirname, 'dllDist', 'react.manifest.json')
     }),
+    new DonePlugin(),
+    new AssetPlugin()
   ]
 })
 // }
